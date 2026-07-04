@@ -1,0 +1,257 @@
+{
+  "info": {
+    "name": "Estacionamiento API - Exam 2",
+    "description": "Colección de pruebas para el microservicio de estacionamiento (com.pucetec.exam2). Incluye endpoint público (disponibles) y endpoints privados protegidos con JWT de AWS Cognito (entrada, salida).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "e5f8a2c1-7b3d-4a9e-9c1f-estacionamiento001"
+  },
+  "item": [
+    {
+      "name": "Auth - Cognito",
+      "item": [
+        {
+          "name": "Canjear code por access_token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "authorization_code", "type": "text" },
+                { "key": "client_id", "value": "3gv2oqe4niko3s47srn1kitsk6", "type": "text" },
+                { "key": "client_secret", "value": "14qdd388f1j6fge52el3l5r2ouvcg5sperlno3701t2jj1chgeiu", "type": "text" },
+                { "key": "code", "value": "PEGA_TU_CODE_AQUI", "type": "text" },
+                { "key": "redirect_uri", "value": "https://d84l1y8p4kdic.cloudfront.net", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "https://us-east-1yzwnali2a.auth.us-east-1.amazoncognito.com/oauth2/token",
+              "protocol": "https",
+              "host": [
+                "us-east-1yzwnali2a",
+                "auth",
+                "us-east-1",
+                "amazoncognito",
+                "com"
+              ],
+              "path": ["oauth2", "token"]
+            },
+            "description": "Canjea el authorization code (obtenido en la Hosted UI de Cognito) por un access_token. El code es de un solo uso y expira en minutos."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Estacionamiento",
+      "item": [
+        {
+          "name": "GET Disponibles (público) - 200",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/estacionamiento/disponibles",
+              "host": ["{{base_url}}"],
+              "path": ["api", "estacionamiento", "disponibles"]
+            },
+            "description": "Endpoint público. Lista los espacios de estacionamiento disponibles. No requiere token."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Entrada (privado, sin token) - 401",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"ABC123\",\n  \"codigoEspacio\": \"A1\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/estacionamiento/entrada",
+              "host": ["{{base_url}}"],
+              "path": ["api", "estacionamiento", "entrada"]
+            },
+            "description": "Sin Authorization header. Debe responder 401 Unauthorized."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Entrada (privado, con token) - 201",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{access_token}}", "type": "string" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"ABC123\",\n  \"codigoEspacio\": \"A1\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/estacionamiento/entrada",
+              "host": ["{{base_url}}"],
+              "path": ["api", "estacionamiento", "entrada"]
+            },
+            "description": "Registra la entrada de un vehículo con token válido. Ocupa el espacio y crea el ticket. Debe responder 201 Created."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Entrada - Espacio inexistente - 404",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{access_token}}", "type": "string" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"XYZ999\",\n  \"codigoEspacio\": \"Z9\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/estacionamiento/entrada",
+              "host": ["{{base_url}}"],
+              "path": ["api", "estacionamiento", "entrada"]
+            },
+            "description": "codigoEspacio 'Z9' no existe en la base de datos. Debe responder 404 Not Found."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Entrada - Espacio ya ocupado - 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{access_token}}", "type": "string" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"NUEVA111\",\n  \"codigoEspacio\": \"A1\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/estacionamiento/entrada",
+              "host": ["{{base_url}}"],
+              "path": ["api", "estacionamiento", "entrada"]
+            },
+            "description": "Validación de negocio adicional: el espacio 'A1' ya está ocupado. Debe responder 409 Conflict."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Salida (privado, sin token) - 401",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"ABC123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/estacionamiento/salida",
+              "host": ["{{base_url}}"],
+              "path": ["api", "estacionamiento", "salida"]
+            },
+            "description": "Sin Authorization header. Debe responder 401 Unauthorized."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Salida (privado, con token) - 200",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{access_token}}", "type": "string" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"ABC123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/estacionamiento/salida",
+              "host": ["{{base_url}}"],
+              "path": ["api", "estacionamiento", "salida"]
+            },
+            "description": "Registra la salida del vehículo con placa 'ABC123'. Cierra el ticket y libera el espacio. Debe responder 200 OK."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Salida - Ticket inexistente - 404",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "{{access_token}}", "type": "string" }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"placa\": \"NOEXISTE999\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/api/estacionamiento/salida",
+              "host": ["{{base_url}}"],
+              "path": ["api", "estacionamiento", "salida"]
+            },
+            "description": "No existe un ticket abierto para la placa 'NOEXISTE999'. Debe responder 404 Not Found."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "access_token",
+      "value": "PEGA_TU_ACCESS_TOKEN_AQUI"
+    }
+  ]
+}
