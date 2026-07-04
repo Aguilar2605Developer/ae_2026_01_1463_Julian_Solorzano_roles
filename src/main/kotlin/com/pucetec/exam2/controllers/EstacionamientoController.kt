@@ -1,5 +1,7 @@
 package com.pucetec.exam2.controllers
 
+import com.pucetec.exam2.dto.EspacioDTO
+import com.pucetec.exam2.dto.SalidaRequestDTO
 import com.pucetec.exam2.dto.TicketRequestDTO
 import com.pucetec.exam2.dto.TicketResponseDTO
 import com.pucetec.exam2.services.EstacionamientoService
@@ -12,8 +14,8 @@ import org.springframework.web.bind.annotation.*
 class EstacionamientoController(private val estacionamientoService: EstacionamientoService) {
 
     @GetMapping("/disponibles")
-    fun consultarDisponibles(): ResponseEntity<String> {
-        return ResponseEntity.ok("Servicio de consulta disponible")
+    fun consultarDisponibles(): ResponseEntity<List<EspacioDTO>> {
+        return ResponseEntity.ok(estacionamientoService.consultarDisponibles())
     }
 
     @PostMapping("/entrada")
@@ -21,8 +23,8 @@ class EstacionamientoController(private val estacionamientoService: Estacionamie
         return ResponseEntity.status(HttpStatus.CREATED).body(estacionamientoService.registrarEntrada(request))
     }
 
-    @PutMapping("/salida/{codigoEspacio}")
-    fun registrarSalida(@PathVariable codigoEspacio: String): ResponseEntity<TicketResponseDTO> {
-        return ResponseEntity.ok(estacionamientoService.registrarSalida(codigoEspacio))
+    @PostMapping("/salida")
+    fun registrarSalida(@RequestBody request: SalidaRequestDTO): ResponseEntity<TicketResponseDTO> {
+        return ResponseEntity.ok(estacionamientoService.registrarSalida(request))
     }
 }

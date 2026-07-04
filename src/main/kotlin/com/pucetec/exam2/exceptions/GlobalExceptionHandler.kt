@@ -11,12 +11,20 @@ class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException::class)
     fun handleResourceNotFound(ex: ResourceNotFoundException): ResponseEntity<ErrorResponse> {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.message ?: "No encontrado", LocalDateTime.now()))
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.message ?: "No encontrado", LocalDateTime.now()))
+    }
+
+    @ExceptionHandler(EstacionamientoLlenoException::class)
+    fun handleEstacionamientoLleno(ex: EstacionamientoLlenoException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ErrorResponse(HttpStatus.CONFLICT.value(), ex.message ?: "Estacionamiento lleno", LocalDateTime.now()))
     }
 
     @ExceptionHandler(BusinessValidationException::class)
     fun handleBusinessValidation(ex: BusinessValidationException): ResponseEntity<ErrorResponse> {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse(HttpStatus.BAD_REQUEST.value(), ex.message ?: "Error de validación", LocalDateTime.now()))
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+            .body(ErrorResponse(HttpStatus.CONFLICT.value(), ex.message ?: "Error de validación", LocalDateTime.now()))
     }
 }
 

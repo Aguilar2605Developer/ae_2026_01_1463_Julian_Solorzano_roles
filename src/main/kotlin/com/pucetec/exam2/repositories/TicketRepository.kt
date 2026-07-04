@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface TicketRepository : JpaRepository<Ticket, Long> {
-    fun findByEspacioIdAndFechaSalidaIsNull(espacioId: Long): Ticket?
+    fun findByPlacaAndFechaSalidaIsNull(placa: String): Ticket?
     fun existsByPlacaAndFechaSalidaIsNull(placa: String): Boolean
 }
