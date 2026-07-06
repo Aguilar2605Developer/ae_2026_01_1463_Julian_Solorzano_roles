@@ -23,7 +23,7 @@ class SecurityConfig {
             .csrf { it.disable() }
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { auth ->
-                auth.requestMatchers("/api/estacionamiento/disponibles").permitAll()
+                auth.requestMatchers("/parking-spaces/available").permitAll()
                 auth.anyRequest().authenticated()
             }
             .oauth2ResourceServer { oauth2 ->

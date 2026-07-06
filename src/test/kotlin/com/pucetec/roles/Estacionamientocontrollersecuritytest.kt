@@ -22,9 +22,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.time.LocalDateTime
 
-// Test de seguridad/web: verifica que la autorización por rol funcione a nivel HTTP,
-// simulando un JWT con las authorities ROLE_ADMIN / ROLE_USER
-@WebMvcTest(EstacionamientoController::class)
+@WebMvcTest(ParkingSpacesController::class, TicketsController::class)
 @Import(SecurityConfig::class)
 class EstacionamientoControllerSecurityTest {
 
@@ -34,28 +32,27 @@ class EstacionamientoControllerSecurityTest {
     @Autowired
     lateinit var objectMapper: ObjectMapper
 
-    // El service se mockea: este test NO valida lógica de negocio, solo autorización HTTP
     @MockitoBean
     lateinit var estacionamientoService: EstacionamientoService
 
-    // ---------- GET /disponibles: público, no requiere rol ----------
+    // ---------- GET /parking-spaces/available: público ----------
 
     @Test
-    fun `GET disponibles responde 200 sin autenticacion`() {
+    fun `GET available responde 200 sin autenticacion`() {
         whenever(estacionamientoService.consultarDisponibles()).thenReturn(emptyList())
 
-        mockMvc.perform(get("/api/estacionamiento/disponibles"))
+        mockMvc.perform(get("/parking-spaces/available"))
             .andExpect(status().isOk)
     }
 
-    // ---------- POST /api/estacionamiento (crear espacio): solo ADMIN ----------
+    // ---------- POST /parking-spaces: solo ADMIN ----------
 
     @Test
-    fun `POST crear espacio sin token responde 401`() {
+    fun `POST parking-spaces sin token responde 401`() {
         val body = objectMapper.writeValueAsString(EspacioDTO(codigo = "A1", disponible = true))
 
         mockMvc.perform(
-            post("/api/estacionamiento")
+            post("/parking-spaces")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body)
         ).andExpect(status().isUnauthorized)
@@ -66,7 +63,7 @@ class EstacionamientoControllerSecurityTest {
         val body = objectMapper.writeValueAsString(EspacioDTO(codigo = "A1", disponible = true))
 
         mockMvc.perform(
-            post("/api/estacionamiento")
+            post("/parking-spaces")
                 .with(jwt().authorities(SimpleGrantedAuthority("ROLE_USER")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body)
@@ -81,21 +78,21 @@ class EstacionamientoControllerSecurityTest {
         whenever(estacionamientoService.crearEspacio(any())).thenReturn(request)
 
         mockMvc.perform(
-            post("/api/estacionamiento")
+            post("/parking-spaces")
                 .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body)
         ).andExpect(status().isCreated)
     }
 
-    // ---------- POST /api/estacionamiento/entrada: solo USER ----------
+    // ---------- POST /tickets/entry: solo USER ----------
 
     @Test
-    fun `POST entrada sin token responde 401`() {
+    fun `POST tickets entry sin token responde 401`() {
         val body = objectMapper.writeValueAsString(TicketRequestDTO(placa = "ABC123", codigoEspacio = "A1"))
 
         mockMvc.perform(
-            post("/api/estacionamiento/entrada")
+            post("/tickets/entry")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body)
         ).andExpect(status().isUnauthorized)
@@ -106,7 +103,7 @@ class EstacionamientoControllerSecurityTest {
         val body = objectMapper.writeValueAsString(TicketRequestDTO(placa = "ABC123", codigoEspacio = "A1"))
 
         mockMvc.perform(
-            post("/api/estacionamiento/entrada")
+            post("/tickets/entry")
                 .with(jwt().authorities(SimpleGrantedAuthority("ROLE_ADMIN")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body)
@@ -128,7 +125,7 @@ class EstacionamientoControllerSecurityTest {
         whenever(estacionamientoService.registrarEntrada(any())).thenReturn(respuesta)
 
         mockMvc.perform(
-            post("/api/estacionamiento/entrada")
+            post("/tickets/entry")
                 .with(jwt().authorities(SimpleGrantedAuthority("ROLE_USER")))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(body)
