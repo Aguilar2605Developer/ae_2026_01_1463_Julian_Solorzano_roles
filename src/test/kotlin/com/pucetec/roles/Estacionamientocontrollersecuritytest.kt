@@ -4,7 +4,7 @@ import tools.jackson.databind.ObjectMapper
 import com.pucetec.roles.dto.EspacioDTO
 import com.pucetec.roles.dto.TicketRequestDTO
 import com.pucetec.roles.dto.TicketResponseDTO
-import com.pucetec.roles.security.SecurityConfig
+import com.pucetec.roles.config.SecurityConfig
 import com.pucetec.roles.services.EstacionamientoService
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.any
