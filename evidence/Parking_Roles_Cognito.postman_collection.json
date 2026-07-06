@@ -1,0 +1,278 @@
+{
+  "info": {
+    "name": "Parking Roles - Autorización con AWS Cognito",
+    "description": "Colección de pruebas del microservicio de estacionamiento con autorización por roles (ADMIN / USER) usando JWT de AWS Cognito.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "admin_token",
+      "value": "eyJraWQiOiJPSWdROXphOTgxOG5SY3VpZXM3TWlITm5tY3piem9LOG1TTVpNQ1Q2enlJPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1NDI4ZDQ4OC00MDQxLTcwNzItZjUyMy1iYzM4ZjE2MzlmYjIiLCJjb2duaXRvOmdyb3VwcyI6WyJBRE1JTiJdLCJpc3MiOiJodHRwczovL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tL3VzLWVhc3QtMV9kUVNBa1E5UlgiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIycjBudTZrbTkxam8xdmNxbDAzdjY1aWRnYyIsIm9yaWdpbl9qdGkiOiIxNWE1ZTUyZC04OTQ3LTRjMzUtOTA3OC0yYzBmOGM3MzhkNmEiLCJldmVudF9pZCI6ImVhMzRmZDM3LTRiYzMtNGMyNS05YzM2LTFkNDRjYjUyMzM3YiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoicGhvbmUgb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzgzMzA3NzE5LCJleHAiOjE3ODMzMTEzMTksImlhdCI6MTc4MzMwNzcxOSwianRpIjoiYjZiZGY5MTktM2YyNS00ZGZkLWJkMzYtMGViM2QwNGM3MDc5IiwidXNlcm5hbWUiOiJhZG1pbl9wYXJraW5nIn0.jhNpTaJBzivYrecTWpRI5ZrpySASeb7_BXZbjq3OICjryzcnoOjC6Rbjiu8rDIcl_7unGLzMFCRh-Ve82O4FcuJP1SMbfj1V0_RGeO9WKMT8EYOANZbYS2KieAyAUJNGdFr2uyx5sURS-p3roJ2Bk9XRTMWr2WzKC5hvHoLrBO-3eyZlM7-vwF23N6l9I47cD_QEkAsvJX00LmL52ue3zvWa5i-LcsYRpX4DnW2kxUhwUwWO7Giq0rzXfKuCClygqDVuTu247-g1xfR5i6wnrP9Q7MpK75JZw1vNVkwV5QBWUjv7Ab8LwjN43h4rF_L4yllcqrgJdAmM82CdZWD3hA",
+      "type": "string"
+    },
+    {
+      "key": "user_token",
+      "value": "eyJraWQiOiJPSWdROXphOTgxOG5SY3VpZXM3TWlITm5tY3piem9LOG1TTVpNQ1Q2enlJPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNGY4MjQ1OC0xMDQxLTcwNDgtYTYwMi1hZmZjZDdkNWY4ZjUiLCJjb2duaXRvOmdyb3VwcyI6WyJVU0VSIl0sImlzcyI6Imh0dHBzOi8vY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb20vdXMtZWFzdC0xX2RRU0FrUTlSWCIsInZlcnNpb24iOjIsImNsaWVudF9pZCI6IjJyMG51NmttOTFqbzF2Y3FsMDN2NjVpZGdjIiwib3JpZ2luX2p0aSI6IjUzMThjZTZkLWNkMDctNDY5My04OTUzLTRmYzczNjM5OGQ3MyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoicGhvbmUgb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzgzMzA3Mjk4LCJleHAiOjE3ODMzMTA4OTgsImlhdCI6MTc4MzMwNzI5OCwianRpIjoiZDI4ODI0ZmUtNDY1Yy00MTg5LWIxMWEtNmU1ZDg4ODEwYTUxIiwidXNlcm5hbWUiOiJ1c2VyX3BhcmtpbmcifQ.AMqUujKXY_b3NMLKke8rMKgWYEnQR7oE4CcdgADh46GD5_jukwuhRGT9cEvZt_mnk4FslSE4bQFpN6Q0ibYTk-miFr_7JXghFyOO-WldSQUyUgu6HNnhuHdcgHks0Wc0pCzFCVp0W9fAUGChoWAN7d2bTj8Dmt7wdXRU5HbzkquiLF8T3kg7DzttqBZHFukwIUiPZl9PeFQkwzBtVNVRMqHCPq7FBlxv_iRgMVwSqFZxQIJDpwqyEBwPwP9yjznuOTg_4rn9B6cP7obSJob7MqDqExkora5ssoV7FHurCGpXvWoqwVcSuQNr8e6BojYllfoQ6E9zCMmdepfz6vItZA",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. GET disponibles - sin token - 200",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/estacionamiento/disponibles",
+          "host": ["{{base_url}}"],
+          "path": ["api", "estacionamiento", "disponibles"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "2. POST crear espacio - sin token - 401",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"codigo\": \"B2\",\n  \"disponible\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/estacionamiento",
+          "host": ["{{base_url}}"],
+          "path": ["api", "estacionamiento"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "3. POST crear espacio - token USER - 403",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{user_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"codigo\": \"B2\",\n  \"disponible\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/estacionamiento",
+          "host": ["{{base_url}}"],
+          "path": ["api", "estacionamiento"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "4. POST crear espacio - token ADMIN - 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"codigo\": \"B2\",\n  \"disponible\": true\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/estacionamiento",
+          "host": ["{{base_url}}"],
+          "path": ["api", "estacionamiento"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "5. POST entrada - sin token - 401",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"placa\": \"ABC123\",\n  \"codigoEspacio\": \"B2\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/estacionamiento/entrada",
+          "host": ["{{base_url}}"],
+          "path": ["api", "estacionamiento", "entrada"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "6. POST entrada - token ADMIN - 403",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{admin_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"placa\": \"ABC123\",\n  \"codigoEspacio\": \"B2\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/estacionamiento/entrada",
+          "host": ["{{base_url}}"],
+          "path": ["api", "estacionamiento", "entrada"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "7. POST entrada - token USER - 201",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{user_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"placa\": \"ABC123\",\n  \"codigoEspacio\": \"B2\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/estacionamiento/entrada",
+          "host": ["{{base_url}}"],
+          "path": ["api", "estacionamiento", "entrada"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "8. POST salida - token USER - 200 (extra)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{user_token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"placa\": \"ABC123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/estacionamiento/salida",
+          "host": ["{{base_url}}"],
+          "path": ["api", "estacionamiento", "salida"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

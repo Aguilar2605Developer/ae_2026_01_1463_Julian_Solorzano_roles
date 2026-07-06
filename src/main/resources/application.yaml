@@ -17,7 +17,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_yzwNALI2A
+          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_dQSAkQ9RX
 
 server:
   port: 8080
